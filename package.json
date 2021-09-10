@@ -1,0 +1,21 @@
+{
+  "name": "property-title_smart-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "danczw",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "openzeppelin-solidity": "^4.3.1",
+    "solc": "^0.8.7-fixed",
+    "truffle": "^5.4.9"
+  }
+}
