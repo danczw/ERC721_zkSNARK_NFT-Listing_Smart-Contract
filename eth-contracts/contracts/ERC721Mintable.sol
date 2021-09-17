@@ -1,32 +1,71 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
 
 import 'openzeppelin-solidity/contracts/utils/Address.sol';
-import 'openzeppelin-solidity/contracts/drafts/Counters.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import 'openzeppelin-solidity/contracts/utils/Counters.sol';
+import 'openzeppelin-solidity/contracts/utils/math/SafeMath.sol';
 import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
 import "./Oraclize.sol";
 
 contract Ownable {
-    //  TODO's
     //  1) create a private '_owner' variable of type address with a public getter function
+    address private _owner;
+    
     //  2) create an internal constructor that sets the _owner var to the creater of the contract 
+    constructor() internal {
+        _owner = msg.sender;
+        emit OwnershipTransfered(msg.sender, newOwner);
+    }
+    
     //  3) create an 'onlyOwner' modifier that throws if called by any account other than the owner.
-    //  4) fill out the transferOwnership function
+    modifier onlyOwner() {
+        require(msg.sender == _owner, "Only the owner can call this function");
+        _;
+    }
+
     //  5) create an event that emits anytime ownerShip is transfered (including in the constructor)
+    event OwnershipTransfered(address prevOwner, address newOwner);
 
+    //  4) fill out the transferOwnership function
     function transferOwnership(address newOwner) public onlyOwner {
-        // TODO add functionality to transfer control of the contract to a newOwner.
         // make sure the new owner is a real address
-
+        require(newOwner != address(0x0), "Passed address is invalid");
+        // TODO add functionality to transfer control of the contract to a newOwner.
+        _owner = newOwner;
+        emit OwnershipTransfered(msg.sender, newOwner);
     }
 }
 
 //  TODO's: Create a Pausable contract that inherits from the Ownable contract
-//  1) create a private '_paused' variable of type bool
-//  2) create a public setter using the inherited onlyOwner modifier 
-//  3) create an internal constructor that sets the _paused variable to false
-//  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
-//  5) create a Paused & Unpaused event that emits the address that triggered the event
+contract Pausable is Ownable {    
+    //  1) create a private '_paused' variable of type bool
+    bool private _paused;
+
+    //  2) create a public setter using the inherited onlyOwner modifier 
+    function togglePausable(bool _status) public onlyOwner {
+        _paused == _status;
+    }
+
+    //  3) create an internal constructor that sets the _paused variable to false
+    constructor() internal {
+        _paused = false;
+    }
+
+    //  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
+    modifier onlyPaused()  {
+        require(_paused == true, "Contract is not paused");
+        _;
+    }
+
+    modifier onlyNotPaused() {
+        require(_paused == false, "Contract is paused");
+        _;
+    }
+
+    //  5) create a Paused & Unpaused event that emits the address that triggered the event
+
+}
 
 contract ERC165 {
     bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
