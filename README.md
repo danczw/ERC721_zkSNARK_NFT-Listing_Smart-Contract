@@ -22,7 +22,7 @@ Setup for project development and related activities. The following resources ha
 
 **ZoKrates Setup**
 
-Run ZoKrates via docker container to implement zkSnarks:
+run ZoKrates via docker container to implement zkSnarks proof:
 
 * run docker container `docker run -v <path to project folder>/zokrates/code:/home/zokrates/code -ti zokrates/zokrates //bin/bash`
 * compile program `zokrates compile -i code/square/square.code`
