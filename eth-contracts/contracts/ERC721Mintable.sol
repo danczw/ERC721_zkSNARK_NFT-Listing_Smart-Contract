@@ -501,21 +501,26 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
      */
 
 
-    constructor (string memory name, string memory symbol, string memory baseTokenURI) {
+    constructor (string memory newName, string memory newSymbol, string memory newBaseTokenURI) {
         // TODO: set instance var values
-        _name = name;
-        _symbol = symbol;
-        _baseTokenURI = baseTokenURI;
+        _name = newName;
+        _symbol = newSymbol;
+        _baseTokenURI = newBaseTokenURI;
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
     }
 
     // TODO: create external getter functions for name, symbol, and baseTokenURI
-
-    function tokenURI(uint256 tokenId) external view returns (string memory) {
-        require(_exists(tokenId));
-        return _tokenURIs[tokenId];
+    function name() external view returns (string memory) {
+        return _name;
     }
 
+    function symbol() external view returns (string memory) {
+        return _symbol;
+    }
+
+    function baseTokenURI() external view returns (string memory) {
+        return _baseTokenURI;
+    }
 
     // TODO: Create an internal function to set the tokenURI of a specified tokenId
     // It should be the _baseTokenURI + the tokenId in string form
@@ -523,6 +528,10 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     // TIP #2: you can also use uint2str() to convert a uint to a string
         // see https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol for strConcat()
     // require the token exists before setting
+    function setTokenURI(uint tokenId) internal {
+        string memory tokenURI = usingOraclize.strConcat(_baseTokenURI, usingOraclize.uint2str(tokenId));
+        _tokenURIs[tokenId] = tokenURI;
+    }
 
 }
 
@@ -535,5 +544,16 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
 
+contract propertyERC721Token is ERC721Metadata {
+    constructor(
+        string memory name,
+        string memory symbol
+    ) ERC721Metadata(name, symbol, "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/") {}
 
+    function mint(address to, uint256 tokenId) public onlyOwner onlyNotPaused returns (bool) {
+        super._mintEnumeration(to, tokenId);
+        super.setTokenURI(tokenId);
+        return true;
+    }
+}
 
