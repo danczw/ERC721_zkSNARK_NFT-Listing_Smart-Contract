@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-
 /*
 
 ORACLIZE_API
@@ -26,18 +25,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-pragma solidity ^0.8.0;
+pragma solidity >= 0.8.0;
 
 // Dummy contract only used to emit to end-user they are using wrong solc
 abstract contract solcChecker {
-/* INCOMPATIBLE SOLC: import the following instead: "github.com/oraclize/ethereum-api/oraclizeAPI_0.4.sol" */ function f(bytes calldata x) external virtual;
+    /* INCOMPATIBLE SOLC: import the following instead: "github.com/oraclize/ethereum-api/oraclizeAPI_0.4.sol" */ function f(bytes calldata x) external virtual;
 }
 
 abstract contract OraclizeI {
 
     address public cbAddress;
 
-    function setProofType(bytes calldata _proofType) external virtual;
+    function setProofType(bytes1 _proofType) external virtual;
     function setCustomGasPrice(uint _gasPrice) external virtual;
     function getPrice(string memory _datasource) public virtual returns (uint _dsprice);
     function randomDS_getSessionPubKeyHash() external view virtual returns (bytes32 _sessionKeyHash);
@@ -116,7 +115,7 @@ library Buffer {
         return _b;
     }
     /**
-      * @dev Appends a byte array to the end of the buffer. Resizes if doing so
+      * @dev Appends a bytes1 array to the end of the buffer. Resizes if doing so
       *      would exceed the capacity of the buffer.
       * @param _buf The buffer to append to.
       * @param _data The data to append.
@@ -154,7 +153,7 @@ library Buffer {
     }
     /**
       *
-      * @dev Appends a byte to the end of the buffer. Resizes if doing so would
+      * @dev Appends a bytes1 to the end of the buffer. Resizes if doing so would
       * exceed the capacity of the buffer.
       * @param _buf The buffer to append to.
       * @param _data The data to append.
@@ -174,7 +173,7 @@ library Buffer {
     }
     /**
       *
-      * @dev Appends a byte to the end of the buffer. Resizes if doing so would
+      * @dev Appends a bytes1 to the end of the buffer. Resizes if doing so would
       * exceed the capacity of the buffer.
       * @param _buf The buffer to append to.
       * @param _data The data to append.
@@ -317,8 +316,8 @@ contract usingOraclize {
     }
 
     function oraclize_setNetwork(uint8 _networkID) internal returns (bool _networkSet) {
-      _networkID; // silence the warning and remain backwards compatible
-      return oraclize_setNetwork();
+        _networkID; // NOTE: Silence the warning and remain backwards compatible
+        return oraclize_setNetwork();
     }
 
     function oraclize_setNetworkName(string memory _network_name) internal {
@@ -350,6 +349,11 @@ contract usingOraclize {
             oraclize_setNetworkName("eth_rinkeby");
             return true;
         }
+        if (getCodeSize(0xa2998EFD205FB9D4B4963aFb70778D6354ad3A41) > 0) { //goerli testnet
+            OAR = OraclizeAddrResolverI(0xa2998EFD205FB9D4B4963aFb70778D6354ad3A41);
+            oraclize_setNetworkName("eth_goerli");
+            return true;
+        }
         if (getCodeSize(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475) > 0) { //ethereum-bridge
             OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
             return true;
@@ -364,14 +368,18 @@ contract usingOraclize {
         }
         return false;
     }
-
+    /**
+     * @dev The following `__callback` functions are just placeholders ideally
+     *      meant to be defined in child contract when proofs are used.
+     *      The function bodies simply silence compiler warnings.
+     */
     function __callback(bytes32 _myid, string memory _result) public {
         __callback(_myid, _result, new bytes(0));
     }
 
     function __callback(bytes32 _myid, string memory _result, bytes memory _proof) public {
-      _myid; _result; _proof; // Silence compiler warnings
-      oraclize_randomDS_args[bytes32(0)] = bytes32(0);
+        _myid; _result; _proof;
+        oraclize_randomDS_args[bytes32(0)] = bytes32(0);
     }
 
     function oraclize_getPrice(string memory _datasource) oraclizeAPI internal returns (uint _queryPrice) {
@@ -409,7 +417,7 @@ contract usingOraclize {
     function oraclize_query(string memory _datasource, string memory _arg, uint _gasLimit) oraclizeAPI internal returns (bytes32 _id) {
         uint price = oraclize.getPrice(_datasource, _gasLimit);
         if (price > 1 ether + tx.gasprice * _gasLimit) {
-           return 0; // Unexpectedly high price
+            return 0; // Unexpectedly high price
         }
         return oraclize.query_withGasLimit{value: price}(0, _datasource, _arg, _gasLimit);
     }
@@ -838,7 +846,7 @@ contract usingOraclize {
         return oraclize_query(_datasource, dynargs, _gasLimit);
     }
 
-    function oraclize_setProof(bytes memory _proofP) oraclizeAPI internal {
+    function oraclize_setProof(bytes1 _proofP) oraclizeAPI internal {
         return oraclize.setProofType(_proofP);
     }
 
@@ -987,7 +995,7 @@ contract usingOraclize {
         for (uint i = 0; i < bresult.length; i++) {
             if ((uint(uint8(bresult[i])) >= 48) && (uint(uint8(bresult[i])) <= 57)) {
                 if (decimals) {
-                   if (_b == 0) break;
+                    if (_b == 0) break;
                     else _b--;
                 }
                 mint *= 10;
@@ -1016,11 +1024,11 @@ contract usingOraclize {
         for (uint i = 0; i < bresult.length; i++) {
             if ((uint(uint8(bresult[i])) >= 48) && (uint(uint8(bresult[i])) <= 57)) {
                 if (decimals) {
-                   if (_b == 0) {
-                       break;
-                   } else {
-                       _b--;
-                   }
+                    if (_b == 0) {
+                        break;
+                    } else {
+                        _b--;
+                    }
                 }
                 mint *= 10;
                 mint += uint(uint8(bresult[i])) - 48;
@@ -1033,22 +1041,25 @@ contract usingOraclize {
         }
         return mint;
     }
-
-    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
-        if (_i == 0) {
+    function uint2str(uint i) internal pure returns (string memory _uintAsString) {
+        if (i == 0) {
             return "0";
         }
-        uint j = _i;
+
+        uint j = i;
         uint len;
         while (j != 0) {
             len++;
             j /= 10;
         }
+
         bytes memory bstr = new bytes(len);
-        uint k = len - 1;
-        while (_i != 0) {
-            bstr[k--] = bytes1(uint8(48 + _i % 10));
-            _i /= 10;
+        uint k = len;
+
+        while (i != 0) {
+            k--;
+            bstr[k] = bytes1(uint8(48 + i % 10));
+            i /= 10;
         }
         return string(bstr);
     }
@@ -1087,11 +1098,11 @@ contract usingOraclize {
         bytes32 sessionKeyHash_bytes32 = oraclize_randomDS_getSessionPubKeyHash();
         assembly {
             mstore(unonce, 0x20)
-            /*
-             The following variables can be relaxed.
-             Check the relaxed random contract at https://github.com/oraclize/ethereum-examples
-             for an idea on how to override and replace commit hash variables.
-            */
+        /*
+         The following variables can be relaxed.
+         Check the relaxed random contract at https://github.com/oraclize/ethereum-examples
+         for an idea on how to override and replace commit hash variables.
+        */
             mstore(add(unonce, 0x20), xor(blockhash(sub(number(), 1)), xor(coinbase(), timestamp())))
             mstore(sessionKeyHash, 0x20)
             mstore(add(sessionKeyHash, 0x20), sessionKeyHash_bytes32)
@@ -1236,7 +1247,7 @@ contract usingOraclize {
         return oraclize_randomDS_sessionKeysHashVerified[sessionPubkeyHash];
     }
     /*
-     The following function has been written by Alex Beregszaszi (@axic), use it under the terms of the MIT license
+     The following function has been written by Alex Beregszaszi, use it under the terms of the MIT license
     */
     function copyBytes(bytes memory _from, uint _fromOffset, uint _length, bytes memory _to, uint _toOffset) internal pure returns (bytes memory _copiedBytes) {
         uint minLength = _length + _toOffset;
@@ -1254,7 +1265,7 @@ contract usingOraclize {
         return _to;
     }
     /*
-     The following function has been written by Alex Beregszaszi (@axic), use it under the terms of the MIT license
+     The following function has been written by Alex Beregszaszi, use it under the terms of the MIT license
      Duplicate Solidity's ecrecover, but catching the CALL return value
     */
     function safer_ecrecover(bytes32 _hash, uint8 _v, bytes32 _r, bytes32 _s) internal returns (bool _success, address _recoveredAddress) {
@@ -1280,7 +1291,7 @@ contract usingOraclize {
         return (ret, addr);
     }
     /*
-     The following function has been written by Alex Beregszaszi (@axic), use it under the terms of the MIT license
+     The following function has been written by Alex Beregszaszi, use it under the terms of the MIT license
     */
     function ecrecovery(bytes32 _hash, bytes memory _sig) internal returns (bool _success, address _recoveredAddress) {
         bytes32 r;
@@ -1297,18 +1308,18 @@ contract usingOraclize {
         assembly {
             r := mload(add(_sig, 32))
             s := mload(add(_sig, 64))
-            /*
-             Here we are loading the last 32 bytes. We exploit the fact that
-             'mload' will pad with zeroes if we overread.
-             There is no 'mload8' to do this, but that would be nicer.
-            */
-            v := byte(0, mload(add(_sig, 96)))
-            /*
-              Alternative solution:
-              'byte' is not working due to the Solidity parser, so lets
-              use the second best option, 'and'
-              v := and(mload(add(_sig, 65)), 255)
-            */
+        /*
+         Here we are loading the last 32 bytes. We exploit the fact that
+         'mload' will pad with zeroes if we overread.
+         There is no 'mload8' to do this, but that would be nicer.
+        */
+//            v := bytes1(0, mload(add(_sig, 96)))
+        /*
+          Alternative solution:
+          'byte' is not working due to the Solidity parser, so lets
+          use the second best option, 'and'
+         */
+          v := and(mload(add(_sig, 65)), 255)
         }
         /*
          albeit non-transactional signatures are not specified by the YP, one would expect it
@@ -1332,8 +1343,3 @@ contract usingOraclize {
         }
     }
 }
-/*
-
-END ORACLIZE_API
-
-*/
