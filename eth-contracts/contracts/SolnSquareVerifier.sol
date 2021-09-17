@@ -22,7 +22,7 @@ contract SolnSquareVerifier is propertyERC721Token {
     SquareVerifier private squareVerifier;
     
     constructor(address verifierAddress) propertyERC721Token(
-        "Property Title Listing", "PTL"
+        "Property zkSRNARK Token", "PZKT", "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"
     ) {
         squareVerifier = SquareVerifier(verifierAddress);
     }
@@ -65,8 +65,8 @@ contract SolnSquareVerifier is propertyERC721Token {
         require(squareVerifier.verify(a, b, c, input), "Proof is invalid");
 
         addSolution(_to, _tokenId, _inputHash);
-        super.mintEnumeration(_to, _tokenId);
-        super.setTokenURI(_tokenId);
+        super._mintEnumerable(_to, _tokenId);
+        super._setTokenURI(_tokenId);
 
         return true;
     }

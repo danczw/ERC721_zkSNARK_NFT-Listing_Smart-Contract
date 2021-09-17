@@ -1,5 +1,5 @@
 const Verifier = artifacts.require('Verifier');
-const proof = require('../../zokrates/zkSnark/proof.json'); //with path
+const proof = require('../../zokrates/zkSnark/proof.json');
 
 // - use the contents from proof.json generated from zokrates steps
 contract('Test Verifier', accounts => {
