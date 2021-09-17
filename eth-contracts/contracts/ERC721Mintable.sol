@@ -390,7 +390,7 @@ contract ERC721Enumerable is ERC165, ERC721 {
      * @param to address the beneficiary that will own the minted token
      * @param tokenId uint256 ID of the token to be minted
      */
-    function _mintEnumeration(address to, uint256 tokenId) internal {
+    function mintEnumeration(address to, uint256 tokenId) internal {
         super._mint(to, tokenId);
 
         _addTokenToOwnerEnumeration(to, tokenId);
@@ -551,7 +551,7 @@ contract propertyERC721Token is ERC721Metadata {
     ) ERC721Metadata(name, symbol, "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/") {}
 
     function mint(address to, uint256 tokenId) public onlyOwner onlyNotPaused returns (bool) {
-        super._mintEnumeration(to, tokenId);
+        super.mintEnumeration(to, tokenId);
         super.setTokenURI(tokenId);
         return true;
     }
