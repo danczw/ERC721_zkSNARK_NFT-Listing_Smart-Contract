@@ -1,6 +1,6 @@
 # Property Title Smart Contract
 
-This is a Ethereum based Smart Contract for decentralized property title listing. Users are able to mint their own token to represent their tutke ti the property. Therefore, proof of ownership is needed. zk-SNARKs are used to create a verification system which can proof the user has title to the property without revealing specific information on the property. Once the token is verified the user is able to place it on a bkockchain market place (OpenSea) for others to purchase.
+This is a Ethereum based Smart Contract for decentralized property title listing. Users are able to mint their own token to represent their tutke ti the property. Therefore, proof of ownership is needed. Zero-Knowledge Succinct Non-Interactive Argument of Knowledge (zk-SNARK) are used to create a verification system which can proof the user has title to the property without revealing specific information on the property. Once the token is verified the user is able to place it on a bkockchain market place (OpenSea) for others to purchase.
 
 ---
 
@@ -22,23 +22,26 @@ Setup for project development and related activities. The following resources ha
 
 **ZoKrates Setup**
 
-run ZoKrates via docker container to implement zkSnarks:
+Run ZoKrates via docker container to implement zkSnarks:
 
-`docker run -v <path to project folder>/zokrates/code:/home/zokrates/code -ti zokrates/zokrates //bin/bash`
+* run docker container `docker run -v <path to project folder>/zokrates/code:/home/zokrates/code -ti zokrates/zokrates //bin/bash`
+* compile program `zokrates compile -i code/square/square.code`
+* generate trusted setup `zokrates setup`
+* compute witness `zokrates compute-witness -a 3 9`
+* generate proof based on witness `zokrates generate-proof`
+* export verifier smart contract `zokrates export-verifier` and `exit` to exit zokrates 
 
-`zokrates compile -i code/square/square.code`
+A verifier.sol contract should be created in the image to be used as zkSnark proof. Depending on OS, copy the created file from the image to your host.
 
-`zokrates setup`
+For Windows:
 
-`zokrates compute-witness -a 3 9`
-
-`zokrates generate-proof`
-
-`zokrates export-verifier`
-
-a verifier.sol contract should be created to be used as zkSnark proof
-
-
+* get container name `docker container ls` (under _NAMES_ column, far right)
+* copy files:
+    * `docker cp <docker name>:/home/zokrates/verifier.sol <path to project folder>/zokrates/zkSnark/`
+    * `docker cp <docker name>:/home/zokrates/proving.key <path to project folder>/zokrates/zkSnark/` (optionally)
+    * `docker cp <docker name>:/home/zokrates/verification.key <path to project folder>/zokrates/zkSnark/` (optionally)
+    * `docker cp <docker name>:/home/zokrates/proof.json <path to project folder>/zokrates/zkSnark/` (optionally)
+    * `docker cp <docker name>:/home/zokrates/witness <path to project folder>/zokrates/zkSnark/` (optionally)
 
 ---
 ###### *[part of my Blockchain Developer Nanodegree](https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309)*
