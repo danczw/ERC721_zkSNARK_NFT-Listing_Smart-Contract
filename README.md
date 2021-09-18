@@ -6,13 +6,13 @@ This is the capstone project submission for my [Blockchain Developer Nanodegree]
 
 ## Metadata
 
-[x] Smart Contract:
+ [x] Smart Contract:
 * Token Name: `Property zkSRNARK Token`
 * Token Symbol: `PZKT`
 * Token Address: `0x857373909D14ac37fbBC047c861bcdDaE9236bFB` ([Etherscan Rinkeby](https://rinkeby.etherscan.io/address/0x857373909d14ac37fbbc047c861bcddae9236bfb))
 * Token Creation: `Sep-17-2021 11:35:06 PM +UTC`
 
-[ ]OpenSea:
+ [ ] OpenSea:
 - [Storefront links]()
 
 
