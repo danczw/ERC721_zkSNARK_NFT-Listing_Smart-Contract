@@ -1,8 +1,20 @@
-# Property Title Smart Contract
+# NFT ERC721
 
-This is a Ethereum based Smart Contract for decentralized property title listing. Users are able to mint their own token to represent their tutke ti the property. Therefore, proof of ownership is needed. Zero-Knowledge Succinct Non-Interactive Argument of Knowledge (zk-SNARK) are used to create a verification system which can proof the user has title to the property without revealing specific information on the property. Once the token is verified the user is able to place it on a bkockchain market place (OpenSea) for others to purchase.
+This is a Ethereum based Smart Contract for decentralized NFT (e.g. real estate title) listing using the ERC721 smarc contract standard and zkSNARK proofs. Users are able to mint their own token to represent their tutke ti the property. Therefore, proof of ownership is needed. Zero-Knowledge Succinct Non-Interactive Argument of Knowledge (zk-SNARK) are used to create a verification system which can proof the user has title to the property without revealing specific information on the property. Once the token is verified the user is able to place it on a bkockchain market place (OpenSea) for others to purchase.
 
 This is the capstone project submission for my [Blockchain Developer Nanodegree](https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309)
+
+## Metadata
+
+[x] Smart Contract:
+* Token Name: `Property zkSRNARK Token`
+* Token Symbol: `PZKT`
+* Token Address: `0x857373909D14ac37fbBC047c861bcdDaE9236bFB` ([Etherscan Rinkeby](https://rinkeby.etherscan.io/address/0x857373909d14ac37fbbc047c861bcddae9236bfb))
+* Token Creation: `Sep-17-2021 11:35:06 PM +UTC`
+
+[ ]OpenSea:
+- [Storefront links]()
+
 
 ---
 
@@ -47,11 +59,29 @@ docker cp <docker name>:/home/zokrates/proof.json <path to project folder>/zokra
 docker cp <docker name>:/home/zokrates/witness <path to project folder>/zokrates/zkSnark/
 ```
 
+**Original Token Minting**
+
+1. _cd_ into [scripts/](./scripts): `cd scripts`
+
+~~2. Mint first 10 tokens by running:~~ 
+```
+node mint.js \
+    ../zokrates/proofs/proof_0.json \
+    ../zokrates/proofs/proof_1.json \
+    ../zokrates/proofs/proof_3.json \
+    ../zokrates/proofs/proof_4.json \
+    ../zokrates/proofs/proof_5.json \
+    ../zokrates/proofs/proof_6.json \
+    ../zokrates/proofs/proof_7.json \
+    ../zokrates/proofs/proof_8.json \
+    ../zokrates/proofs/proof_9.json
+```
+
 ---
 
 ## Testing
 
-1. Make sure to have Ganache Ethereum testnet running with the following configurations (as per [truffle-config.js](./eth-contracts/truffle-config.js)):
+1. Make sure to have _Ganache_ running with the following configurations (as per [truffle-config.js](./eth-contracts/truffle-config.js)):
 
 ```JSON
 development:
