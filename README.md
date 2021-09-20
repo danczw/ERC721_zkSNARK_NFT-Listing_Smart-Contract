@@ -1,4 +1,4 @@
-# NFT ERC721
+# NFT ERC721 with zkSNARK
 
 Ethereum based Smart Contract for decentralized NFT listing using the ERC721 smart contract standard and zkSNARK proofs.
 
