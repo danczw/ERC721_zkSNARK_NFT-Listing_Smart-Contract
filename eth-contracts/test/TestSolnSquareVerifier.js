@@ -1,12 +1,11 @@
 const SolnSquareVerifier = artifacts.require('SolnSquareVerifier');
 const SquareVerifier = artifacts.require('SquareVerifier');
-const proof = require('../../zokrates/zkSnark/proof.json');
+
+const proof = require('../../zokrates/proofs/proof_0.json');
 
 contract("Test SolnSquareVerifier", accounts => {
 
     const account_one = accounts[0];
-    const account_two = accounts[1];
-    const account_three = accounts[2];
 
     const tokenId_one = 6;
     const tokenId_two = 77;
@@ -45,7 +44,7 @@ contract("Test SolnSquareVerifier", accounts => {
 
             try {
                 await solnSquareVerifier.mintToken(
-                    account_two,
+                    account_one,
                     tokenId_two,
                     proof.proof.a,
                     proof.proof.b,
@@ -53,10 +52,10 @@ contract("Test SolnSquareVerifier", accounts => {
                     proof.inputs
                 );
             } catch (error) {
-                mintStatus = "mint failed"
+                mintStatus = error.reason;
             }
 
-            assert.equal(mintStatus, "mint failed", "Should not allow minting with duplicate solution");
+            assert.equal(mintStatus, "Solution already in use.", "Should not allow minting with duplicate solution");
         });
         
         it('should NOT mint with wrong solution', async function () {
@@ -64,7 +63,7 @@ contract("Test SolnSquareVerifier", accounts => {
 
             try {
                 await solnSquareVerifier.mintToken(
-                    account_three,
+                    account_one,
                     tokenId_three,
                     proof.proof.c,
                     proof.proof.b,
@@ -72,10 +71,10 @@ contract("Test SolnSquareVerifier", accounts => {
                     proof.inputs
                 );
             } catch (error) {
-                mintStatus = "mint failed"
+                mintStatus = error.reason;
             }
 
-            assert.equal(mintStatus, "mint failed", "Should not allow minting with wrong solution");
+            assert.equal(mintStatus, "Proof is invalid", "Should not allow minting with wrong solution");
         });
     });
 
