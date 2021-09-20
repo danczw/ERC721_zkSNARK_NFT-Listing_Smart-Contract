@@ -1,20 +1,28 @@
 # NFT ERC721
 
-This is a Ethereum based Smart Contract for decentralized NFT (e.g. real estate title) listing using the ERC721 smarc contract standard and zkSNARK proofs. Users are able to mint their own token to represent their tutke ti the property. Therefore, proof of ownership is needed. Zero-Knowledge Succinct Non-Interactive Argument of Knowledge (zk-SNARK) are used to create a verification system which can proof the user has title to the property without revealing specific information on the property. Once the token is verified the user is able to place it on a bkockchain market place (OpenSea) for others to purchase.
+Ethereum based Smart Contract for decentralized NFT listing using the ERC721 smart contract standard and zkSNARK proofs.
 
-This is the capstone project submission for my [Blockchain Developer Nanodegree](https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309)
+---
+
+## Overview
+
+The example of real estate title listing is used in further explanation. This is the capstone project submission for my [Blockchain Developer Nanodegree](https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309)
+
+Users are able to mint their own token and thereby e.g. represent their title of the real estate property. Therefore, proof of ownership is needed. Zero-Knowledge Succinct Non-Interactive Argument of Knowledge (zk-SNARK - great introductory read by the Mina Foundation: ["What are zk-SNARKs?"](https://minaprotocol.com/blog/what-are-zk-snarks)) proofs are used to create a verification system which can proof the user has title to the property without revealing specific information on the property. Once the token is verified the user is able to place it on a bkockchain market place (OpenSea) for others to purchase.
+
+--
 
 ## Metadata
 
- [x] Smart Contract:
+ [x] Ethereum Smart Contract:
 * Token Name: `Property zkSNARK Token`
 * Token Symbol: `PZKT`
 * Token Address: `0xa7b34fc279A7e046560a24ABfA5B14BBf2592db2` ([Etherscan Rinkeby](https://rinkeby.etherscan.io/address/0xa7b34fc279A7e046560a24ABfA5B14BBf2592db2))
 * Token Creation: `Sep-19-2021 11:28:37 PM +UTC` ([Txn on Etherscan Rinkeby](https://rinkeby.etherscan.io/tx/0x824ae8d522e8aeed61f47e342663ec4bed2009fdd500f73190a63ce615bc370e))
 
  [x] OpenSea:
-- [PZKT: Property zkSNARK Token - Storefront](https://testnets.opensea.io/collection/property-zksnark-token)
-- Test Transfer: [txn hash: 0x13495b98239b90055b07d834f4021f8f5c06cfb27d08e46f6a556e8063cd9513](https://rinkeby.etherscan.io/tx/0x13495b98239b90055b07d834f4021f8f5c06cfb27d08e46f6a556e8063cd9513) - New Owner [Danczw-Testing](https://testnets.opensea.io/Danczw-Testing)
+- PZKT: "Property zkSNARK Token" - [Storefront](https://testnets.opensea.io/collection/property-zksnark-token)
+- Test Transfer Txn hash: [0x13495b98239b90055b07d834f4021f8f5c06cfb27d08e46f6a556e8063cd9513](https://rinkeby.etherscan.io/tx/0x13495b98239b90055b07d834f4021f8f5c06cfb27d08e46f6a556e8063cd9513) - New Owner [Danczw-Testing](https://testnets.opensea.io/Danczw-Testing)
 
 
 ---
@@ -33,11 +41,11 @@ Setup for project development and related activities. The following resources ha
 
 **Project Setup**
 
-`npm install` to install dependencies as per [package.json](./package.json)
+`npm install` to install dependencies.
 
 **ZoKrates Setup** (optionally!)
 
-Run ZoKrates via docker container to create own zkSnarks proof, alternatively use provided _Verifier.sol_ contract. All files needed can also be found in [zokrates/](./zokrates/):
+Run ZoKrates via docker container to create own zkSnark proof, alternatively use provided _Verifier.sol_ contract. All files including 10 test proofs can also be found in [zokrates/](./zokrates/):
 
 * run docker container `docker run -v <path to project folder>/zokrates/code:/home/zokrates/code -ti zokrates/zokrates //bin/bash`
 * compile program `zokrates compile -i code/square/square.code`
@@ -46,7 +54,7 @@ Run ZoKrates via docker container to create own zkSnarks proof, alternatively us
 * generate proof based on witness `zokrates generate-proof`
 * export verifier smart contract `zokrates export-verifier` and `exit` to exit zokrates 
 
-A verifier.sol contract should be created in the image to be used as zkSnark proof. Depending on OS, copy the created file from the image to your host.
+A verifier.sol contract should be created in the docker image to be used as zkSnark proof. Depending on OS, copy the created file from the image to your host.
 
 For Windows:
 
@@ -59,20 +67,14 @@ docker cp <docker name>:/home/zokrates/verification.key <path to project folder>
 docker cp <docker name>:/home/zokrates/proof.json <path to project folder>/zokrates/proofs/
 docker cp <docker name>:/home/zokrates/witness <path to project folder>/zokrates/zkSnark/
 ```
+* copy _Verifier.sol_ to [eth-contracts/contracts/](./eth-contracts/contracts)
+
 
 ---
 
 ## Testing
 
-1. Make sure to have _Ganache_ running with the following configurations (as per [truffle-config.js](./eth-contracts/truffle-config.js)):
-
-```JSON
-development:
-    host: "127.0.0.1",
-    port: 7545,
-    network_id: "*",
-}
-```
+1. Make sure to have _Ganache_ running, development configurations (as per [truffle-config.js](./eth-contracts/truffle-config.js)):
 2. _cd_ into [eth-contracts/](./eth-contracts): `cd eth-contracts`
 3. Test zkSNARK and ERC721 individually:
 ```
@@ -100,7 +102,9 @@ For migrating contract, setup testnet in [truffle-config.js](./eth-contracts/tru
 
 1. set _.env_ vars according to [.env](./.env.example)
 2. _cd_ into [scripts/](./scripts): `cd scripts`
-3. set and choose development or test environment by setting process env variables (see script comments for details) in _mint.js_ script and _.env_
+3. set and choose development or test environment by setting process env variables (see script comments for details) in _mint.js_ script
 4. run `node mint.js`
+
+---
 
 ###### *[part of my Blockchain Developer Nanodegree](https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309)*
