@@ -1,6 +1,5 @@
 # files
 /node_modules
-/eth-contracts/build
 
 # local environment variable
 .env
