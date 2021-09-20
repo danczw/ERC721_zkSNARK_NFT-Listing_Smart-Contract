@@ -17,12 +17,12 @@ Users are able to mint their own token and thereby e.g. represent their title of
  [x] Ethereum Smart Contract:
 * Token Name: `Property zkSNARK Token`
 * Token Symbol: `PZKT`
-* Token Address: `0xa7b34fc279A7e046560a24ABfA5B14BBf2592db2` ([Etherscan Rinkeby](https://rinkeby.etherscan.io/address/0xa7b34fc279A7e046560a24ABfA5B14BBf2592db2))
+* Token Address: `0xa7b34fc279A7e046560a24ABfA5B14BBf2592db2` ([Etherscan Rinkeby](https://rinkeby.etherscan.io/token/0xa7b34fc279a7e046560a24abfa5b14bbf2592db2))
 * Token Creation: `Sep-19-2021 11:28:37 PM +UTC` ([Txn on Etherscan Rinkeby](https://rinkeby.etherscan.io/tx/0x824ae8d522e8aeed61f47e342663ec4bed2009fdd500f73190a63ce615bc370e))
 
  [x] OpenSea:
 - PZKT: "Property zkSNARK Token" - [Storefront](https://testnets.opensea.io/collection/property-zksnark-token)
-- Test Transfer Txn hash: [0x13495b98239b90055b07d834f4021f8f5c06cfb27d08e46f6a556e8063cd9513](https://rinkeby.etherscan.io/tx/0x13495b98239b90055b07d834f4021f8f5c06cfb27d08e46f6a556e8063cd9513) - New Owner [Danczw-Testing](https://testnets.opensea.io/Danczw-Testing)
+- Test Transfer Txn hash: [0xe07635919394b602d342d9af9bcfad0dcd9948b4c2dce3330e6dfa8b1cd3d9e3](https://rinkeby.etherscan.io/tx/0xe07635919394b602d342d9af9bcfad0dcd9948b4c2dce3330e6dfa8b1cd3d9e3) - New Owner [Danczw-Testing](https://testnets.opensea.io/Danczw-Testing) for 2 ETH
 
 
 ---
